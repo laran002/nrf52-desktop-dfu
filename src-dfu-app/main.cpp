@@ -71,7 +71,10 @@ int main(int argc, char* argv[]) {
                                        },
                                        data_file, bin_file);
 
+    std::cout << "Start scanning for devices:" << std::endl;
+
     callback_holder.callback_on_scan_found = [&](NativeBLE::DeviceDescriptor device) {
+        std::cout << device.address << std::endl;
         if (is_mac_addr_match(device.address, device_dfu_ble_address)) {
             std::cout << "  Found: " << device.name << " (" << device.address << ")" << std::endl;
             device_found = true;
@@ -100,7 +103,7 @@ int main(int argc, char* argv[]) {
             }
             received_data << std::endl;
             std::cout << received_data.str();
-            // std::cout << "Calling Notify" << std::endl;
+            std::cout << "Calling Notify" << std::endl;
             dfu_server.notify(NORDIC_SECURE_DFU_SERVICE, NORDIC_DFU_CONTROL_POINT_CHAR,
                               std::string(reinterpret_cast<const char*>(data), length));
         });
